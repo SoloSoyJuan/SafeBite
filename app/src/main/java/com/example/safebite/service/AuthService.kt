@@ -1,6 +1,8 @@
 package com.example.safebite.service
 
-import com.example.safebite.repository.AuthRepository
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 
 interface AuthService {
     suspend fun createUser(email:String, password:String)
@@ -10,11 +12,11 @@ interface AuthService {
 class AuthServiceImpl:AuthService{
 
     override suspend fun createUser(email:String, password:String) {
-        TODO("Not yet implemented")
+        Firebase.auth.createUserWithEmailAndPassword(email, password).await()
     }
 
     override suspend fun loginWithEmailandPassword(email:String, password:String) {
-        TODO("Not yet implemented")
+        Firebase.auth.signInWithEmailAndPassword(email, password).await()
     }
 
 }

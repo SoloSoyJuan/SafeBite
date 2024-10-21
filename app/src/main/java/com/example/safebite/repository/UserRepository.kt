@@ -3,6 +3,8 @@ package com.example.safebite.repository
 import com.example.safebite.domain.model.User
 import com.example.safebite.service.UserService
 import com.example.safebite.service.UserServiceImpl
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 interface UserRepository {
     suspend fun createUser(user: User)
@@ -13,11 +15,15 @@ class UserReposotoryImpl(
 val userService: UserService = UserServiceImpl()
 ): UserRepository{
     override suspend fun createUser(user: User) {
-        TODO("Not yet implemented")
+        userService.createUser(user)
     }
 
     override suspend fun getCurrentUser(): User? {
-        TODO("Not yet implemented")
+        Firebase.auth.currentUser?.let{
+            return userService.getUserById(it.uid)
+        }?:run {
+            return null
+        }
     }
 
 }
